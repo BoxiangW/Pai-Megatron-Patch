@@ -288,7 +288,7 @@ def save_mgmodel(mgmodel, args):
 
     full_model = mgmodel.state_dict_for_save_checkpoint()
     for k in list(full_model.keys()):
-        if full_model[k] is None or "_extra_state" in k:
+        if full_model[k] is None: #or "_extra_state" in k:
             full_model.pop(k)
     pattern = r'local_experts\.(\d+)\.'
     num_local_experts = args.num_experts // args.expert_model_parallel_size if args.num_experts else 0

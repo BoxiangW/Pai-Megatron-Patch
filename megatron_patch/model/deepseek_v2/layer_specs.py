@@ -18,6 +18,7 @@ from megatron.core.tensor_parallel.layers import ColumnParallelLinear, RowParall
 
 from megatron.core.transformer.custom_layers.transformer_engine import (
     TEDotProductAttention,
+    TELinear,
     TELayerNormColumnParallelLinear,
     TENorm,
     TERowParallelLinear,
@@ -42,7 +43,7 @@ def get_gpt_layer_with_transformer_engine_spec(
 ) -> ModuleSpec:
 
     mlp = _get_mlp_module_spec(
-        use_te=False, num_experts=num_experts, moe_grouped_gemm=moe_grouped_gemm
+        use_te=True, num_experts=num_experts, moe_grouped_gemm=moe_grouped_gemm
     )
 
     mlp_dense = _get_mlp_module_spec(
@@ -56,15 +57,15 @@ def get_gpt_layer_with_transformer_engine_spec(
                 module=SelfAttention,
                 params={"attn_mask_type": AttnMaskType.causal},
                 submodules=SelfAttentionSubmodules(
-                    linear_q_proj=ColumnParallelLinear,
-                    linear_q_a_proj=ColumnParallelLinear,
-                    linear_q_b_proj=ColumnParallelLinear,
-                    linear_kv_a_proj_with_mqa=ColumnParallelLinear,
-                    linear_kv_b_proj=ColumnParallelLinear,
-                    linear_proj=RowParallelLinear,
+                    linear_q_proj=TEColumnParallelLinear,
+                    linear_q_a_proj=TEColumnParallelLinear,
+                    linear_q_b_proj=TEColumnParallelLinear,
+                    linear_kv_a_proj_with_mqa=TEColumnParallelLinear,
+                    linear_kv_b_proj=TEColumnParallelLinear,
+                    core_attention=TEDotProductAttention,
+                    linear_proj=TERowParallelLinear,
                     q_a_layernorm=DeepseekV2RMSNorm if qk_layernorm else IdentityOp,
                     kv_a_layernorm=DeepseekV2RMSNorm if qk_layernorm else IdentityOp,
-                    core_attention=TEDotProductAttention,
                 ),
             ),
             self_attn_bda=get_bias_dropout_add,

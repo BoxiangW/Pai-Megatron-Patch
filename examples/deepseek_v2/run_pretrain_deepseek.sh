@@ -6,7 +6,7 @@ MEGATRON_PATH=$( dirname $( dirname ${CURRENT_DIR}))
 export PYTHONPATH=$PYTHONPATH:${MEGATRON_PATH}:${MEGATRON_PATH}/Megatron-LM-240405
 export CUDA_DEVICE_MAX_CONNECTIONS=1
 
-ENV=$1
+ENV=dsw
 if [ $ENV = dsw ]; then
 export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
 MASTER_ADDR=localhost
@@ -23,27 +23,27 @@ GPUS_PER_NODE=${KUBERNETES_CONTAINER_RESOURCE_GPU}
 
 fi
 
-MODEL_SIZE=$2
-BATCH_SIZE=$3
-GLOBAL_BATCH_SIZE=$4
-LR=$5
-MIN_LR=$6
-SEQ_LEN=$7
-PAD_LEN=$8
-PR=$9
-TP=${10}
-PP=${11}
-EP=${12}
-AC=${13}
-DO=${14}
-FL=${15}
-SP=${16}
-SAVE_INTERVAL=${17}
-DATASET_PATH=${18}
-PRETRAIN_CHECKPOINT_PATH=${19}
-TRAIN_TOKENS=${20}
-WARMUP_TOKENS=${21}
-OUTPUT_BASEPATH=${22}
+MODEL_SIZE=A2.4B
+BATCH_SIZE=1
+GLOBAL_BATCH_SIZE=8
+LR=1e-5
+MIN_LR=1e-6
+SEQ_LEN=1024
+PAD_LEN=1024
+PR=bf16
+TP=1
+PP=1
+EP=4
+AC=sel
+DO=true
+FL=true
+SP=true
+SAVE_INTERVAL=100000
+DATASET_PATH=/lustre/fsw/coreai_dlalgo_llm/bwang/deepseek-datasets/mmap_deepseekv2_datasets_text_document
+PRETRAIN_CHECKPOINT_PATH=/lustre/fsw/coreai_dlalgo_llm/bwang/deepseek-ckpts/DeepSeek-V2-Lite-to-mcore-tp1-pp1-ep4-te
+TRAIN_TOKENS=12844228608
+WARMUP_TOKENS=1284422860
+OUTPUT_BASEPATH=/lustre/fsw/coreai_dlalgo_llm/bwang/deepseek-ckpts/test_loss
 
 if [ $MODEL_SIZE = A21B ]; then
 

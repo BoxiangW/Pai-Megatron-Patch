@@ -1,18 +1,18 @@
 #!/bin/bash
 set -e
-export CUDA_VISIBLE_DEVICES=7
+export CUDA_VISIBLE_DEVICES=0
 START_TIME=$SECONDS
 MASTER_ADDR=localhost
 MASTER_PORT=$(shuf -n 1 -i 10000-65535)
 
-MODEL_SIZE=$1
-SOURCE_CKPT_PATH=$2
-TARGET_CKPT_PATH=$3
-TP=$4
-PP=$5
-EP=$6
-mg2hf=$7
-HF_CKPT_PATH=$8
+MODEL_SIZE=A2.4B
+SOURCE_CKPT_PATH=/lustre/fsw/coreai_dlalgo_llm/bwang/deepseek-ckpts/DeepSeek-V2-Lite
+TARGET_CKPT_PATH=/lustre/fsw/coreai_dlalgo_llm/bwang/deepseek-ckpts/DeepSeek-V2-Lite-to-mcore-tp1-pp1-ep4-te
+TP=1
+PP=1
+EP=4
+mg2hf=false
+HF_CKPT_PATH=none #$8
 
 CURRENT_DIR="$( cd "$( dirname "$0" )" && pwd )"
 MEGATRON_PATH=$( dirname $(dirname $( dirname ${CURRENT_DIR})))

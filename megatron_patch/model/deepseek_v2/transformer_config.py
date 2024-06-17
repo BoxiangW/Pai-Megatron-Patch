@@ -28,5 +28,5 @@ class DeepSeekV2TransformerConfig(TransformerConfig):
     rotary_scaling_factor: int = None
 
     max_position_embeddings: int = None
-
-    moe_aux_loss_coeff: float = 0.0
+    
+    normalization: str = "RMSNorm"
