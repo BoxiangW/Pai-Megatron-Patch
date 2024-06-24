@@ -1,4 +1,19 @@
 #!/bin/bash
+
+# Parameters
+#SBATCH --account=coreai_dlalgo_llm
+#SBATCH --dependency=singleton
+#SBATCH --error=/home/boxiangw/results/pai/log-1.err
+#SBATCH --exclusive
+#SBATCH --job-name=pai-1
+#SBATCH --mem=0
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=8
+#SBATCH --output=/home/boxiangw/results/pai/log-1.out
+#SBATCH --partition=batch
+#SBATCH --time=04:00:00
+
+#!/bin/bash
 set -e
 
 CURRENT_DIR="$( cd "$( dirname "$0" )" && pwd )"
@@ -25,25 +40,25 @@ fi
 
 MODEL_SIZE=A2.4B
 BATCH_SIZE=1
-GLOBAL_BATCH_SIZE=8
+GLOBAL_BATCH_SIZE=32
 LR=1e-5
 MIN_LR=1e-6
-SEQ_LEN=1024
-PAD_LEN=1024
+SEQ_LEN=32
+PAD_LEN=3
 PR=bf16
 TP=2
 PP=1
-EP=4
+EP=1
 AC=sel
 DO=true
 FL=true
 SP=true
 SAVE_INTERVAL=100000
-DATASET_PATH=/lustre/fsw/coreai_dlalgo_llm/bwang/deepseek-datasets/mmap_deepseekv2_datasets_text_document
-PRETRAIN_CHECKPOINT_PATH=/lustre/fsw/coreai_dlalgo_llm/bwang/deepseek-ckpts/DeepSeek-V2-Lite-to-mcore-tp2-pp1-ep4
+DATASET_PATH=/home/boxiangw/deepseek-datasets/mmap_deepseekv2_datasets_text_document
+PRETRAIN_CHECKPOINT_PATH=/home/boxiangw/deepseek-ckpts/DeepSeek-V2-Lite-to-mcore-tp2-pp1-ep4
 TRAIN_TOKENS=12844228608
 WARMUP_TOKENS=1284422860
-OUTPUT_BASEPATH=/lustre/fsw/coreai_dlalgo_llm/bwang/deepseek-ckpts/test_loss
+OUTPUT_BASEPATH=/home/boxiangw/deepseek-ckpts/test_loss
 
 if [ $MODEL_SIZE = A21B ]; then
 
@@ -263,3 +278,4 @@ run_cmd="torchrun $DISTRIBUTED_ARGS pretrain_deepseek.py
 echo ${run_cmd}
 eval ${run_cmd}
 set +x
+

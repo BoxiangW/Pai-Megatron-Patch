@@ -598,7 +598,7 @@ def check_mg_eg_forward(mgmodel, hgmodel, mgargs):
             layer.mlp.shared_expert.linear_fc2.register_forward_hook(
                 partial(print_output_hook, layer_idx=idx, mode='mg-shared_experts_down_proj_out'), with_kwargs=True)
 
-    input_ids = torch.tensor([[1, 2, 3]]).long().cuda()
+    input_ids = torch.tensor([[1, 2, 3, 4]]).long().cuda()
     attention_mask, loss_mask, position_ids = get_ltor_masks_and_position_ids(input_ids, -100, True, True, True)
     print(hgmodel)
     print(mgmodel)
