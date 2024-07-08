@@ -6,11 +6,11 @@ MASTER_ADDR=localhost
 MASTER_PORT=$(shuf -n 1 -i 10000-65535)
 
 MODEL_SIZE=A2.4B
-SOURCE_CKPT_PATH=/workspace/code/deepseek-ckpts/DeepSeek-V2-Lite
-TARGET_CKPT_PATH=/workspace/code/deepseek-ckpts/DeepSeek-V2-Lite-to-mcore-tp2-pp1-ep1
-TP=2
+SOURCE_CKPT_PATH=/lustre/fsw/coreai_dlalgo_llm/bwang/deepseek-ckpts/DeepSeek-V2-Lite
+TARGET_CKPT_PATH=/lustre/fsw/coreai_dlalgo_llm/bwang/deepseek-ckpts/DeepSeek-V2-Lite-to-mcore-tp1-pp1-ep4
+TP=1
 PP=1
-EP=1
+EP=4
 mg2hf=false
 HF_CKPT_PATH=none #$8
 

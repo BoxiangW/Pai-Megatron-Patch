@@ -8,12 +8,12 @@ export CUDA_DEVICE_MAX_CONNECTIONS=1
 
 ENV=dsw
 if [ $ENV = dsw ]; then
-export CUDA_VISIBLE_DEVICES=0,1 #,2,3,4,5,6,7
+export CUDA_VISIBLE_DEVICES=0,1,2,3 #,4,5,6,7
 MASTER_ADDR=localhost
 MASTER_PORT=$(shuf -n 1 -i 10000-65535)
 NNODES=1
 NODE_RANK=0
-GPUS_PER_NODE=2
+GPUS_PER_NODE=4
 
 elif [ $ENV = dlc ]; then
 
@@ -29,21 +29,21 @@ GLOBAL_BATCH_SIZE=32
 LR=1e-5
 MIN_LR=1e-6
 SEQ_LEN=32
-PAD_LEN=3
+PAD_LEN=32
 PR=bf16
-TP=2
+TP=1
 PP=1
-EP=1
+EP=4
 AC=sel
 DO=true
 FL=true
 SP=true
 SAVE_INTERVAL=100000
-DATASET_PATH=/workspace/code/deepseek-datasets/mmap_deepseekv2_datasets_text_document
-PRETRAIN_CHECKPOINT_PATH=/workspace/code/deepseek-ckpts/DeepSeek-V2-Lite-to-mcore-tp2-pp1-ep1-1
+DATASET_PATH=/lustre/fsw/coreai_dlalgo_llm/bwang/deepseek-datasets/mmap_deepseekv2_datasets_text_document
+PRETRAIN_CHECKPOINT_PATH=/lustre/fsw/coreai_dlalgo_llm/bwang/deepseek-ckpts/DeepSeek-V2-Lite-to-mcore-tp1-pp1-ep4
 TRAIN_TOKENS=12844228608
 WARMUP_TOKENS=1284422860
-OUTPUT_BASEPATH=/workspace/code/deepseek-ckpts/test_loss
+OUTPUT_BASEPATH=/lustre/fsw/coreai_dlalgo_llm/bwang/deepseek-ckpts/test_loss
 
 if [ $MODEL_SIZE = A21B ]; then
 
